@@ -9,19 +9,19 @@ end
 
 class Tree
   def initialize(arr)
-    @arr = arr
-    @root = nil
+    @arr = arr.uniq.sort
+    @root = build_tree(@arr, 0, @arr.length - 1)
   end
 
   def build_tree(arr, start, last)
+    return nil if arr.empty?
     return nil if start > last
     mid = (start + last) / 2
     node = Node.new(arr[mid])
     node.left = build_tree(arr, start, mid - 1)
     node.right = build_tree(arr, mid + 1, last)
 
-    @root = node
-    return @root
+    node
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
