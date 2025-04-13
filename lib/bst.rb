@@ -48,10 +48,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-arr = [1, 2, 3, 4, 5, 6, 7]
-
-ss = Tree.new(arr)
-p ss.pretty_print
-ss.insert(4)
-p ss.pretty_print
