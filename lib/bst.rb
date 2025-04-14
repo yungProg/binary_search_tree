@@ -28,5 +28,21 @@ class Tree
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
-  end 
+  end
+  
+  def insert(data, current_node = @root)
+    return Node.new(data) if current_node.nil?
+    return current_node if current_node.data == data
+    if data < current_node.data
+      current_node.left = insert(data, current_node.left)
+    elsif data > current_node.data
+      current_node.right = insert(data, current_node.right)
+    end
+    current_node
+  end
 end
+
+my_arr = [1,2,3,4,5,6]
+tree = Tree.new(my_arr)
+tree.insert(-1)
+tree.pretty_print
