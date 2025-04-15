@@ -72,6 +72,15 @@ class Tree
     current_node
   end
 
+  def find(data, current_node = @root)
+    return nil if current_node.nil?
+    if data < current_node.data
+      current_node = find(data, current_node.left)
+    elsif data > current_node.data
+      current_node = find(data, current_node.right)
+    end
+    current_node
+  end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
