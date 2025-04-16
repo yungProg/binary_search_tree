@@ -82,6 +82,25 @@ class Tree
     current_node
   end
 
+  def level_order_iterate
+    current_node = @root
+    return if current_node.nil?
+    order = []
+    queue = []
+    queue << current_node
+    while queue.any?
+      visited_node = queue.shift
+      if block_given?
+        yield(visited_node)
+      else
+        order << visited_node.data
+      end
+      queue << visited_node.left if visited_node.left
+      queue << visited_node.right if visited_node.right
+    end
+    order unless block_given?
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
