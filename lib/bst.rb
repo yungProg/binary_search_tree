@@ -101,6 +101,22 @@ class Tree
     order unless block_given?
   end
 
+  def preorder(current_node = @root, arr = [])
+    #root> left > right
+    return if current_node.nil? 
+    arr << current_node.data
+    if block_given?
+      yield(current_node)
+      preorder(current_node.left) { |node| yield node }
+      preorder(current_node.right) { |node| yield node }
+    else
+      current_node
+      preorder(current_node.left, arr)
+      preorder(current_node.right, arr)
+      arr
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
