@@ -84,8 +84,8 @@ class Tree
 
   def level_order_iterate
     current_node = @root
-    return if current_node.nil?
-    order = []
+    return [] if current_node.nil? unless block_given?
+    order = [] unless block_given? 
     queue = []
     queue << current_node
     while queue.any?
