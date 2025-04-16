@@ -104,13 +104,12 @@ class Tree
   def preorder(current_node = @root, arr = [])
     # root > left > right
     return [] if current_node.nil?
-    arr << current_node.data
     if block_given?
       yield(current_node)
       preorder(current_node.left) { |node| yield node }
       preorder(current_node.right) { |node| yield node }
     else
-      current_node
+      arr << current_node.data
       preorder(current_node.left, arr)
       preorder(current_node.right, arr)
       arr
@@ -119,6 +118,7 @@ class Tree
 
   def inorder(current_node = @root, arr = [])
     # left > root > right
+
     return [] if current_node.nil?
     if block_given?
       inorder(current_node.left) {|node| yield node}
@@ -127,8 +127,23 @@ class Tree
     else
       inorder(current_node.left, arr)
       arr << current_node.data
-      current_node
       inorder(current_node.right, arr)
+      arr
+    end
+  end
+
+  def postorder(current_node = @root, arr = [])
+      # left > right > root
+
+    return [] if current_node.nil?
+    if block_given?
+      postorder(current_node.left) { |node| yield node }
+      postorder(current_node.right) { |node| yield node }
+      yield(current_node)
+    else
+      postorder(current_node.left, arr)
+      postorder(current_node.right, arr)
+      arr << current_node.data
       arr
     end
   end
