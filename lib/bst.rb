@@ -50,14 +50,12 @@ class Tree
     elsif data > current_node.data
       current_node.right = delete(data, current_node.right)
     else
-      if current_node.left.nil? && current_node.right.nil?
-        return nil
-      end
+      return nil if current_node.left.nil? && current_node.right.nil?
 
       return current_node.right if current_node.left.nil?
-       
+
       return current_node.left if current_node.right.nil?
-      
+
       successor = find_min(current_node.right)
       current_node.data = successor.data
       current_node.right = delete(successor.data, current_node.right)
@@ -74,6 +72,7 @@ class Tree
 
   def find(data, current_node = @root)
     return nil if current_node.nil?
+
     if data < current_node.data
       current_node = find(data, current_node.left)
     elsif data > current_node.data
@@ -84,8 +83,9 @@ class Tree
 
   def level_order_iterate
     current_node = @root
-    return [] if current_node.nil? unless block_given?
-    order = [] unless block_given? 
+    return [] if current_node.nil?
+
+    order = [] unless block_given?
     queue = []
     queue << current_node
     while queue.any?
@@ -101,13 +101,14 @@ class Tree
     order unless block_given?
   end
 
-  def preorder(current_node = @root, arr = [])
+  def preorder(current_node = @root, arr = [], &block)
     # root > left > right
     return [] if current_node.nil?
+
     if block_given?
       yield(current_node)
-      preorder(current_node.left) { |node| yield node }
-      preorder(current_node.right) { |node| yield node }
+      preorder(current_node.left, &block)
+      preorder(current_node.right, &block)
     else
       arr << current_node.data
       preorder(current_node.left, arr)
@@ -116,14 +117,15 @@ class Tree
     end
   end
 
-  def inorder(current_node = @root, arr = [])
+  def inorder(current_node = @root, arr = [], &block)
     # left > root > right
 
     return [] if current_node.nil?
+
     if block_given?
-      inorder(current_node.left) {|node| yield node}
+      inorder(current_node.left, &block)
       yield(current_node)
-      inorder(current_node.right) { |node| yield node}
+      inorder(current_node.right, &block)
     else
       inorder(current_node.left, arr)
       arr << current_node.data
@@ -132,13 +134,14 @@ class Tree
     end
   end
 
-  def postorder(current_node = @root, arr = [])
-      # left > right > root
+  def postorder(current_node = @root, arr = [], &block)
+    # left > right > root
 
     return [] if current_node.nil?
+
     if block_given?
-      postorder(current_node.left) { |node| yield node }
-      postorder(current_node.right) { |node| yield node }
+      postorder(current_node.left, &block)
+      postorder(current_node.right, &block)
       yield(current_node)
     else
       postorder(current_node.left, arr)
@@ -146,6 +149,19 @@ class Tree
       arr << current_node.data
       arr
     end
+  end
+
+  def height(data)
+    node = find(data)
+    find_node_height(node)
+  end
+
+  def find_node_height(current_node)
+    return -1 if current_node.nil?
+
+    left = find_node_height(current_node.left)
+    right = find_node_height(current_node.right)
+    [left, right].max + 1
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
