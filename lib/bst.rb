@@ -194,6 +194,11 @@ class Tree
     true
   end
 
+  def rebalance
+    new_array = inorder(@root)
+    @root = build_tree(new_array, 0, new_array.length - 1)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
