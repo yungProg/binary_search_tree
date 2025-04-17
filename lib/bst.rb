@@ -153,6 +153,8 @@ class Tree
 
   def height(data)
     node = find(data)
+    return nil if node.nil?
+
     find_node_height(node)
   end
 
@@ -162,6 +164,23 @@ class Tree
     left = find_node_height(current_node.left)
     right = find_node_height(current_node.right)
     [left, right].max + 1
+  end
+
+  def depth(data)
+    node = find(data)
+    return nil if node.nil?
+
+    find_node_depth(node)
+  end
+
+  def find_node_depth(node, current_node = @root, node_depth = 0)
+    return -1 if current_node.nil?
+    return node_depth if node == current_node
+
+    left = find_node_depth(node, current_node.left, node_depth + 1)
+    return left unless left == -1
+
+    find_node_depth(node, current_node.right, node_depth + 1)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
