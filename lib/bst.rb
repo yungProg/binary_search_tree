@@ -183,6 +183,17 @@ class Tree
     find_node_depth(node, current_node.right, node_depth + 1)
   end
 
+  def balanced?(current_node = @root)
+    return -1 if current_node.nil?
+
+    difference = find_node_height(current_node.left) - find_node_height(current_node.right)
+    return false if difference.abs > 1
+
+    balanced?(current_node.left)
+    balanced?(current_node.right)
+    true
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
