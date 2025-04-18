@@ -101,6 +101,24 @@ class Tree
     order unless block_given?
   end
 
+  def level_order_recursion(current_node = @root, queue = [current_node], arr = [], &block)
+    return [] if current_node.nil?
+    return [] if queue.empty?
+
+    current_node = queue.shift
+    queue << current_node.left if current_node.left
+    queue << current_node.right if current_node.right
+
+    if block_given?
+      yield(current_node)  
+      level_order_recursion(current_node, queue, &block)
+    else
+      arr << current_node.data
+    end
+    level_order_recursion(current_node, queue, arr)
+    arr unless block_given?
+  end
+
   def preorder(current_node = @root, arr = [], &block)
     # root > left > right
     return [] if current_node.nil?

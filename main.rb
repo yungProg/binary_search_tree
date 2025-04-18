@@ -5,6 +5,7 @@ arr = (Array.new(15) { rand(1..100) })
 tree = Tree.new(arr)
 p tree.balanced?
 p tree.level_order_iterate
+p tree.level_order_recursion
 p tree.preorder
 p tree.postorder
 p tree.inorder
@@ -15,6 +16,7 @@ p tree.balanced?
 tree.rebalance
 p tree.balanced?
 p tree.level_order_iterate
+p tree.level_order_recursion
 p tree.preorder
 p tree.postorder
 p tree.inorder
